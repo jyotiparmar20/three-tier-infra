@@ -1,0 +1,46 @@
+pipeline {
+   agent any 
+
+   stages {
+
+    stage ('git-pull") {
+      steps {
+      git branch: 'main', url: 'https://github.com/jyotiparmar20/three-tier-infra.git'
+    }
+  }
+      stage ("docker-backend-build") {
+       steps {
+          sh '''
+            cd backend 
+             docker build -t jyotiparmar208/jugnoo-backend .'''
+       }
+    } 
+            stage ("docker-frontend-build") {
+       steps {
+          sh '''
+            cd frontend 
+             docker build -t jyotiparmar208/jugnoo-frontend .'''
+       }
+    }
+       stage ("docker-push") {
+         steps  {
+            sh '''
+          docker push jyotiparmar208/jugnoo-backend
+          docker push jyotiparmar208/jugnoo-frontend'''
+    } 
+  }
+         
+        stage('Deploy to EKS') {
+            steps {
+                sh '''
+                aws eks --region us-east-1 update-kubeconfig --name three-tier-eks
+                kubectl apply -f main.yaml
+                '''
+            } 
+       }
+  }
+}
+
+
+
+ 
