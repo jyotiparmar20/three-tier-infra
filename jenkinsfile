@@ -3,7 +3,7 @@ pipeline {
 
    stages {
 
-    stage ('git-pull") {
+    stage ('git-pull') {
       steps {
       git branch: 'main', url: 'https://github.com/jyotiparmar20/three-tier-infra.git'
     }
@@ -12,21 +12,24 @@ pipeline {
        steps {
           sh '''
             cd backend 
-             docker build -t jyotiparmar208/jugnoo-backend .'''
+             docker build -t jyotiparmar208/jugnoo-backend .
+             '''
        }
     } 
             stage ("docker-frontend-build") {
        steps {
           sh '''
             cd frontend 
-             docker build -t jyotiparmar208/jugnoo-frontend .'''
+             docker build -t jyotiparmar208/jugnoo-frontend . 
+              '''
        }
     }
        stage ("docker-push") {
          steps  {
             sh '''
           docker push jyotiparmar208/jugnoo-backend
-          docker push jyotiparmar208/jugnoo-frontend'''
+          docker push jyotiparmar208/jugnoo-frontend 
+          '''
     } 
   }
          
