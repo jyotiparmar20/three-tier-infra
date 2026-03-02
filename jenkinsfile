@@ -36,10 +36,10 @@ pipeline {
         stage('Deploy to EKS') {
             steps {
                 sh '''
-                aws eks --region us-east-1 update-kubeconfig --name three-tier-eks
+                aws eks --region us-east-1 update-kubeconfig --name three-tier-cluster
                 kubectl apply -f main.yaml
                 '''
-            } 
+            }
        }
   }
 }
