@@ -1,41 +1,44 @@
+
+
+
+
+ 
 pipeline {
-   agent any 
+    agent any
 
-   stages {
+    stages {
 
-    stage ('git-pull') {
-      steps {
-      git branch: 'main', url: 'https://github.com/jyotiparmar20/three-tier-infra.git'
-    }
-  }
-      stage ("docker-backend-build") {
-       
-       }
-    } 
-
-        stage ("docker-backend-build") {
-         steps {
-              dir('backend') {
-               sh 'docker build -t jyotiparmar208/jugnoo:backend .'
+        stage('git-pull') {
+            steps {
+                git branch: 'main', url: 'https://github.com/jyotiparmar20/three-tier-infra.git'
+            }
         }
-    }
-}     
-    stage ("docker-frontend-build") {
-          sh '''
-            cd frontend 
-             docker build -t jyotiparmar208/jugnoo:frontend . 
-              '''
-       }
-    }
-       stage ("docker-push") {
-         steps  {
-            sh '''
-          docker push jyotiparmar208/jugnoo-backend
-          docker push jyotiparmar208/jugnoo-frontend 
-          '''
-    } 
-  }
-         
+
+        stage("docker-backend-build") {
+            steps {
+                dir('backend') {
+                    sh 'docker build -t jyotiparmar208/jugnoo:backend .'
+                }
+            }
+        }
+
+        stage("docker-frontend-build") {
+            steps {
+                dir('frontend') {
+                    sh 'docker build -t jyotiparmar208/jugnoo:frontend .'
+                }
+            }
+        }
+
+        stage("docker-push") {
+            steps {
+                sh '''
+                docker push jyotiparmar208/jugnoo:backend
+                docker push jyotiparmar208/jugnoo:frontend
+                '''
+            }
+        }
+
         stage('Deploy to EKS') {
             steps {
                 sh '''
@@ -43,10 +46,6 @@ pipeline {
                 kubectl apply -f main.yaml
                 '''
             }
-       }
-  }
+        }
+    }
 }
-
-
-
- 
