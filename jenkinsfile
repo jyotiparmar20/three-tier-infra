@@ -12,7 +12,7 @@ pipeline {
        steps {
           sh '''
             cd backend 
-             docker build -t jyotiparmar208/jugnoo-backend .
+             docker build -t jyotiparmar208/jugnoo:backend .
              '''
        }
     } 
