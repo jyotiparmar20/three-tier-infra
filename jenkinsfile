@@ -16,13 +16,14 @@ pipeline {
         stage ("docker-backend-build") {
          steps {
               dir('backend') {
-               sh 'docker build -t jyotiparmar208/jugnoo-backend .'
+               sh 'docker build -t jyotiparmar208/jugnoo:backend .'
         }
     }
-}
+}     
+    stage ("docker-frontend-build") {
           sh '''
             cd frontend 
-             docker build -t jyotiparmar208/jugnoo-frontend . 
+             docker build -t jyotiparmar208/jugnoo:frontend . 
               '''
        }
     }
